@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1028" height="965" viewBox="0 0 1028 965" role="img" aria-labelledby="title description" xml:lang="ru">
+<title id="title">ER-диаграмма схемы shop</title>
+<desc id="description">Восемь таблиц PostgreSQL с колонками, типами и кардинальностями всех внешних ключей. Текстовая версия приведена в shop-erd.md.</desc>
+<style>
+  text { font-family: "DejaVu Sans", "Helvetica Neue", sans-serif; fill: #162e45; }
+  .heading { font-size: 30px; font-weight: 700; }
+  .subtitle, .legend { font-size: 14px; fill: #455e76; }
+  .entity, .column, .type, .key, .count { font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .entity { font-size: 16px; font-weight: 700; }
+  .column, .type { font-size: 12px; }
+  .type { fill: #455e76; }
+  .key, .count { font-size: 11px; font-weight: 700; fill: #214c77; }
+</style>
+<rect x="0" y="0" width="1028" height="965" fill="#f6f9fc"/>
+<text x="40" y="53" class="heading" text-anchor="start">ER-диаграмма схемы shop</text>
+<text x="40" y="79" class="subtitle" text-anchor="start">PostgreSQL · learning</text>
+<line x1="312" y1="179" x2="378" y2="179" stroke="#607995" stroke-width="2"/>
+<text x="319" y="171" class="count" text-anchor="start">1</text>
+<text x="371" y="171" class="count" text-anchor="end">0..1</text>
+<line x1="650" y1="179" x2="716" y2="179" stroke="#607995" stroke-width="2"/>
+<text x="657" y="171" class="count" text-anchor="start">1</text>
+<text x="709" y="171" class="count" text-anchor="end">0..*</text>
+<line x1="176" y1="323" x2="176" y2="401" stroke="#607995" stroke-width="2"/>
+<text x="185" y="340" class="count" text-anchor="start">1</text>
+<text x="185" y="392" class="count" text-anchor="start">0..*</text>
+<line x1="312" y1="465" x2="378" y2="465" stroke="#607995" stroke-width="2"/>
+<text x="319" y="457" class="count" text-anchor="start">1</text>
+<text x="371" y="457" class="count" text-anchor="end">0..*</text>
+<line x1="650" y1="465" x2="716" y2="465" stroke="#607995" stroke-width="2"/>
+<text x="657" y="457" class="count" text-anchor="start">0..*</text>
+<text x="709" y="457" class="count" text-anchor="end">1</text>
+<line x1="852" y1="239" x2="852" y2="401" stroke="#607995" stroke-width="2"/>
+<text x="861" y="256" class="count" text-anchor="start">0..*</text>
+<text x="861" y="392" class="count" text-anchor="start">1</text>
+<line x1="176" y1="609" x2="176" y2="718" stroke="#607995" stroke-width="2"/>
+<text x="185" y="626" class="count" text-anchor="start">1</text>
+<text x="185" y="709" class="count" text-anchor="start">0..*</text>
+<line x1="852" y1="637" x2="852" y2="718" stroke="#607995" stroke-width="2"/>
+<text x="861" y="654" class="count" text-anchor="start">0..*</text>
+<text x="861" y="709" class="count" text-anchor="start">1</text>
+<g aria-label="users">
+<rect x="40" y="115" width="272" height="208" fill="#ffffff" rx="9"/>
+<rect x="40" y="115" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="41" y="145" width="270" height="10" fill="#e3effb"/>
+<line x1="40" y1="155" x2="312" y2="155" stroke="#cddbea" stroke-width="1"/>
+<text x="54" y="141" class="entity" text-anchor="start">users</text>
+<text x="54" y="173" class="column" text-anchor="start">id</text>
+<text x="208" y="173" class="key" text-anchor="start">PK</text>
+<text x="298" y="173" class="type" text-anchor="end">bigint</text>
+<line x1="52" y1="183" x2="300" y2="183" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="201" class="column" text-anchor="start">name</text>
+<text x="298" y="201" class="type" text-anchor="end">varchar(100)?</text>
+<line x1="52" y1="211" x2="300" y2="211" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="229" class="column" text-anchor="start">email</text>
+<text x="298" y="229" class="type" text-anchor="end">varchar(100)</text>
+<line x1="52" y1="239" x2="300" y2="239" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="257" class="column" text-anchor="start">is_active</text>
+<text x="298" y="257" class="type" text-anchor="end">boolean</text>
+<line x1="52" y1="267" x2="300" y2="267" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="285" class="column" text-anchor="start">password_hash</text>
+<text x="298" y="285" class="type" text-anchor="end">text</text>
+<line x1="52" y1="295" x2="300" y2="295" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="313" class="column" text-anchor="start">delivery_address</text>
+<text x="298" y="313" class="type" text-anchor="end">text?</text>
+<rect x="40" y="115" width="272" height="208" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="users_carts">
+<rect x="378" y="115" width="272" height="68" fill="#ffffff" rx="9"/>
+<rect x="378" y="115" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="379" y="145" width="270" height="10" fill="#e3effb"/>
+<line x1="378" y1="155" x2="650" y2="155" stroke="#cddbea" stroke-width="1"/>
+<text x="392" y="141" class="entity" text-anchor="start">users_carts</text>
+<text x="392" y="173" class="column" text-anchor="start">user_id</text>
+<text x="546" y="173" class="key" text-anchor="start">PK/FK</text>
+<text x="636" y="173" class="type" text-anchor="end">bigint</text>
+<rect x="378" y="115" width="272" height="68" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="cart_items">
+<rect x="716" y="115" width="272" height="124" fill="#ffffff" rx="9"/>
+<rect x="716" y="115" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="717" y="145" width="270" height="10" fill="#e3effb"/>
+<line x1="716" y1="155" x2="988" y2="155" stroke="#cddbea" stroke-width="1"/>
+<text x="730" y="141" class="entity" text-anchor="start">cart_items</text>
+<text x="730" y="173" class="column" text-anchor="start">cart_id</text>
+<text x="884" y="173" class="key" text-anchor="start">PK/FK</text>
+<text x="974" y="173" class="type" text-anchor="end">bigint</text>
+<line x1="728" y1="183" x2="976" y2="183" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="201" class="column" text-anchor="start">product_id</text>
+<text x="884" y="201" class="key" text-anchor="start">PK/FK</text>
+<text x="974" y="201" class="type" text-anchor="end">bigint</text>
+<line x1="728" y1="211" x2="976" y2="211" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="229" class="column" text-anchor="start">products_count</text>
+<text x="974" y="229" class="type" text-anchor="end">integer</text>
+<rect x="716" y="115" width="272" height="124" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="orders">
+<rect x="40" y="401" width="272" height="208" fill="#ffffff" rx="9"/>
+<rect x="40" y="401" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="41" y="431" width="270" height="10" fill="#e3effb"/>
+<line x1="40" y1="441" x2="312" y2="441" stroke="#cddbea" stroke-width="1"/>
+<text x="54" y="427" class="entity" text-anchor="start">orders</text>
+<text x="54" y="459" class="column" text-anchor="start">id</text>
+<text x="208" y="459" class="key" text-anchor="start">PK</text>
+<text x="298" y="459" class="type" text-anchor="end">bigint</text>
+<line x1="52" y1="469" x2="300" y2="469" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="487" class="column" text-anchor="start">status</text>
+<text x="298" y="487" class="type" text-anchor="end">varchar(50)</text>
+<line x1="52" y1="497" x2="300" y2="497" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="515" class="column" text-anchor="start">created_at</text>
+<text x="298" y="515" class="type" text-anchor="end">timestamptz</text>
+<line x1="52" y1="525" x2="300" y2="525" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="543" class="column" text-anchor="start">total_sum</text>
+<text x="298" y="543" class="type" text-anchor="end">numeric(12,2)</text>
+<line x1="52" y1="553" x2="300" y2="553" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="571" class="column" text-anchor="start">address</text>
+<text x="298" y="571" class="type" text-anchor="end">text</text>
+<line x1="52" y1="581" x2="300" y2="581" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="599" class="column" text-anchor="start">user_id</text>
+<text x="208" y="599" class="key" text-anchor="start">FK</text>
+<text x="298" y="599" class="type" text-anchor="end">bigint</text>
+<rect x="40" y="401" width="272" height="208" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="order_items">
+<rect x="378" y="401" width="272" height="208" fill="#ffffff" rx="9"/>
+<rect x="378" y="401" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="379" y="431" width="270" height="10" fill="#e3effb"/>
+<line x1="378" y1="441" x2="650" y2="441" stroke="#cddbea" stroke-width="1"/>
+<text x="392" y="427" class="entity" text-anchor="start">order_items</text>
+<text x="392" y="459" class="column" text-anchor="start">id</text>
+<text x="546" y="459" class="key" text-anchor="start">PK</text>
+<text x="636" y="459" class="type" text-anchor="end">bigint</text>
+<line x1="390" y1="469" x2="638" y2="469" stroke="#edf1f6" stroke-width="1"/>
+<text x="392" y="487" class="column" text-anchor="start">product_id</text>
+<text x="546" y="487" class="key" text-anchor="start">FK</text>
+<text x="636" y="487" class="type" text-anchor="end">bigint</text>
+<line x1="390" y1="497" x2="638" y2="497" stroke="#edf1f6" stroke-width="1"/>
+<text x="392" y="515" class="column" text-anchor="start">order_id</text>
+<text x="546" y="515" class="key" text-anchor="start">FK</text>
+<text x="636" y="515" class="type" text-anchor="end">bigint</text>
+<line x1="390" y1="525" x2="638" y2="525" stroke="#edf1f6" stroke-width="1"/>
+<text x="392" y="543" class="column" text-anchor="start">product_count</text>
+<text x="636" y="543" class="type" text-anchor="end">integer</text>
+<line x1="390" y1="553" x2="638" y2="553" stroke="#edf1f6" stroke-width="1"/>
+<text x="392" y="571" class="column" text-anchor="start">product_name</text>
+<text x="636" y="571" class="type" text-anchor="end">varchar(255)</text>
+<line x1="390" y1="581" x2="638" y2="581" stroke="#edf1f6" stroke-width="1"/>
+<text x="392" y="599" class="column" text-anchor="start">product_cost</text>
+<text x="636" y="599" class="type" text-anchor="end">numeric(12,2)</text>
+<rect x="378" y="401" width="272" height="208" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="products">
+<rect x="716" y="401" width="272" height="236" fill="#ffffff" rx="9"/>
+<rect x="716" y="401" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="717" y="431" width="270" height="10" fill="#e3effb"/>
+<line x1="716" y1="441" x2="988" y2="441" stroke="#cddbea" stroke-width="1"/>
+<text x="730" y="427" class="entity" text-anchor="start">products</text>
+<text x="730" y="459" class="column" text-anchor="start">id</text>
+<text x="884" y="459" class="key" text-anchor="start">PK</text>
+<text x="974" y="459" class="type" text-anchor="end">bigint</text>
+<line x1="728" y1="469" x2="976" y2="469" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="487" class="column" text-anchor="start">name</text>
+<text x="974" y="487" class="type" text-anchor="end">varchar(255)</text>
+<line x1="728" y1="497" x2="976" y2="497" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="515" class="column" text-anchor="start">description</text>
+<text x="974" y="515" class="type" text-anchor="end">text?</text>
+<line x1="728" y1="525" x2="976" y2="525" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="543" class="column" text-anchor="start">price</text>
+<text x="974" y="543" class="type" text-anchor="end">numeric(12,2)</text>
+<line x1="728" y1="553" x2="976" y2="553" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="571" class="column" text-anchor="start">stock</text>
+<text x="974" y="571" class="type" text-anchor="end">integer</text>
+<line x1="728" y1="581" x2="976" y2="581" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="599" class="column" text-anchor="start">is_active</text>
+<text x="974" y="599" class="type" text-anchor="end">boolean</text>
+<line x1="728" y1="609" x2="976" y2="609" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="627" class="column" text-anchor="start">category_id</text>
+<text x="884" y="627" class="key" text-anchor="start">FK</text>
+<text x="974" y="627" class="type" text-anchor="end">integer</text>
+<rect x="716" y="401" width="272" height="236" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="payments">
+<rect x="40" y="718" width="272" height="180" fill="#ffffff" rx="9"/>
+<rect x="40" y="718" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="41" y="748" width="270" height="10" fill="#e3effb"/>
+<line x1="40" y1="758" x2="312" y2="758" stroke="#cddbea" stroke-width="1"/>
+<text x="54" y="744" class="entity" text-anchor="start">payments</text>
+<text x="54" y="776" class="column" text-anchor="start">id</text>
+<text x="208" y="776" class="key" text-anchor="start">PK</text>
+<text x="298" y="776" class="type" text-anchor="end">bigint</text>
+<line x1="52" y1="786" x2="300" y2="786" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="804" class="column" text-anchor="start">payment_sum</text>
+<text x="298" y="804" class="type" text-anchor="end">numeric(12,2)</text>
+<line x1="52" y1="814" x2="300" y2="814" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="832" class="column" text-anchor="start">status</text>
+<text x="298" y="832" class="type" text-anchor="end">varchar(50)</text>
+<line x1="52" y1="842" x2="300" y2="842" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="860" class="column" text-anchor="start">payment_provider_id</text>
+<text x="208" y="860" class="key" text-anchor="start">UK</text>
+<text x="298" y="860" class="type" text-anchor="end">text?</text>
+<line x1="52" y1="870" x2="300" y2="870" stroke="#edf1f6" stroke-width="1"/>
+<text x="54" y="888" class="column" text-anchor="start">order_id</text>
+<text x="208" y="888" class="key" text-anchor="start">FK</text>
+<text x="298" y="888" class="type" text-anchor="end">bigint</text>
+<rect x="40" y="718" width="272" height="180" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<g aria-label="categories">
+<rect x="716" y="718" width="272" height="96" fill="#ffffff" rx="9"/>
+<rect x="716" y="718" width="272" height="40" fill="#e3effb" rx="9"/>
+<rect x="717" y="748" width="270" height="10" fill="#e3effb"/>
+<line x1="716" y1="758" x2="988" y2="758" stroke="#cddbea" stroke-width="1"/>
+<text x="730" y="744" class="entity" text-anchor="start">categories</text>
+<text x="730" y="776" class="column" text-anchor="start">id</text>
+<text x="884" y="776" class="key" text-anchor="start">PK</text>
+<text x="974" y="776" class="type" text-anchor="end">integer</text>
+<line x1="728" y1="786" x2="976" y2="786" stroke="#edf1f6" stroke-width="1"/>
+<text x="730" y="804" class="column" text-anchor="start">name</text>
+<text x="974" y="804" class="type" text-anchor="end">varchar(255)</text>
+<rect x="716" y="718" width="272" height="96" fill="none" rx="9" stroke="#bccddd"/>
+</g>
+<text x="40" y="932" class="legend" text-anchor="start">PK — первичный ключ   ·   FK — внешний ключ   ·   UK — уникальное значение   ·   ? — допускается NULL</text>
+</svg>
