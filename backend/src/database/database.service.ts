@@ -18,4 +18,10 @@ export class DatabaseService {
 
     console.log('Module destroyed');
   }
+
+  async makeQuery(query: string) {
+    const result = await this.pool.query(query);
+
+    return result;
+  }
 }

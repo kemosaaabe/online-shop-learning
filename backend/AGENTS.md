@@ -28,3 +28,4 @@ These instructions apply to `backend/`. Run backend commands from this directory
 
 - For learning tasks, explain the topic first and let the user describe it in their own words. Then give them a practical exercise and its acceptance criteria.
 - The user writes the solution and the assistant reviews it. Offer hints gradually when asked. If the user requests scaffolding or implementation of a specific part, limit edits to that part.
+- Update `LEARNING_PROGRESS.md` after each reviewed milestone. Record what was verified and the next step.
