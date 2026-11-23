@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Pool } from 'pg';
+import { Pool, QueryResultRow } from 'pg';
 
 @Injectable()
 export class DatabaseService {
@@ -19,8 +19,11 @@ export class DatabaseService {
     console.log('Module destroyed');
   }
 
-  async makeQuery(query: string) {
-    const result = await this.pool.query(query);
+  async makeQuery<T extends QueryResultRow>(
+    query: string,
+    params: unknown[] = [],
+  ) {
+    const result = await this.pool.query<T>(query, params);
 
     return result;
   }
