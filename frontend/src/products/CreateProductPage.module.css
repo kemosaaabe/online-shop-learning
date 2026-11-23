@@ -1,0 +1,149 @@
+.page {
+  width: min(100% - 2rem, 66rem);
+  margin-inline: auto;
+  padding-block: clamp(2rem, 6vw, 4.5rem);
+}
+
+.heading,
+.responseHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.heading {
+  margin-bottom: 1.5rem;
+}
+
+.heading h1 {
+  margin: 0;
+  font-size: clamp(1.85rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.heading code,
+.responseHeading code {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.35rem;
+  color: #174d38;
+  background: #d9eadf;
+  white-space: nowrap;
+}
+
+.workspace,
+.form,
+.pair {
+  display: grid;
+  gap: 1rem;
+}
+
+.workspace {
+  align-items: start;
+}
+
+.form,
+.api {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid #c7d7ce;
+  border-radius: 0.9rem;
+  background: white;
+}
+
+.form label {
+  display: block;
+  min-width: 0;
+  font-weight: 650;
+}
+
+.form input,
+.form textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #9aafa2;
+  border-radius: 0.45rem;
+  font: inherit;
+  font-weight: 400;
+  color: inherit;
+  background: #fbfdfb;
+}
+
+.form textarea {
+  resize: vertical;
+}
+
+.form small,
+.api p {
+  color: #496253;
+  font-weight: 400;
+}
+
+.form button {
+  justify-self: start;
+  border: 0;
+  border-radius: 0.45rem;
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-weight: 650;
+  color: white;
+  background: #215c45;
+  cursor: pointer;
+}
+
+.form button:hover:not(:disabled) {
+  background: #174733;
+}
+
+.form button:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.form :is(input, textarea, button):focus-visible {
+  outline: 2px solid #207252;
+  outline-offset: 2px;
+}
+
+.api section + section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dbe5de;
+}
+
+.api h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.api p,
+.api pre {
+  margin: 0.45rem 0 0;
+}
+
+.api pre {
+  max-height: 22rem;
+  padding: 0.75rem;
+  overflow: auto;
+  border-radius: 0.45rem;
+  font-size: 0.875rem;
+  background: #eef4ef;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 32rem) {
+  .pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 52rem) {
+  .workspace {
+    grid-template-columns: 1.15fr 1fr;
+  }
+}

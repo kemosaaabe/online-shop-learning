@@ -1,3 +1,5 @@
+import { CreateProductPage } from './products';
+
 export function App() {
-  return <main>sanek</main>;
+  return <CreateProductPage />;
 }
