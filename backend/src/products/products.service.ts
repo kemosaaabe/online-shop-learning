@@ -7,6 +7,7 @@ import { DatabaseError } from 'pg';
 import { DatabaseService } from '../database/database.service.js';
 import type { ProductResponse } from './interfaces/product.interface.js';
 import { CreateProductDto } from './schemas/create-product.schema.js';
+import { UpdateProductDto } from './schemas/update-product.schema.js';
 
 @Injectable()
 export class ProductsService {
@@ -70,6 +71,54 @@ export class ProductsService {
         );
 
       return createdProduct[0];
+    } catch (error: unknown) {
+      if (error instanceof DatabaseError && error.code === '23503') {
+        throw new BadRequestException('Указанная категория не существует');
+      }
+
+      throw error;
+    }
+  }
+
+  async updateProduct(productId: number, productDto: UpdateProductDto) {
+    const params: unknown[] = [productId];
+    const assignments: string[] = [];
+
+    const fieldValues = {
+      name: productDto.name,
+      description: productDto.description,
+      price: productDto.price,
+      stock: productDto.stock,
+      category_id: productDto.categoryId,
+    };
+
+    for (const [col, value] of Object.entries(fieldValues)) {
+      if (value === undefined) {
+        continue;
+      }
+
+      const paramIndex = params.push(value);
+      assignments.push(`${col} = $${paramIndex}`);
+    }
+
+    try {
+      const { rows: updatedProduct } =
+        await this.databaseService.makeQuery<ProductResponse>(
+          `
+          UPDATE shop.products
+          SET ${assignments.join(',')}
+          WHERE id = $1
+            AND is_active = TRUE
+          RETURNING id, name, price, stock
+          `,
+          params,
+        );
+
+      if (updatedProduct.length === 0) {
+        throw new NotFoundException();
+      }
+
+      return updatedProduct[0];
     } catch (error: unknown) {
       if (error instanceof DatabaseError && error.code === '23503') {
         throw new BadRequestException('Указанная категория не существует');
