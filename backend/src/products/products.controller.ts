@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { PositiveIntPipe } from '../common/pipes/positive-int.pipe.js';
+import { AdminGuard } from '../auth/guards/admin.guard.js';
 import { ProductsService } from './products.service.js';
 import {
   type CreateProductDto,
@@ -24,6 +33,7 @@ export class ProductsController {
     return this.productsService.getProduct(productId);
   }
 
+  @UseGuards(AdminGuard)
   @Post()
   createProduct(
     @Body({ schema: createProductSchema }) productDto: CreateProductDto,
@@ -31,6 +41,7 @@ export class ProductsController {
     return this.productsService.createProduct(productDto);
   }
 
+  @UseGuards(AdminGuard)
   @Patch(':id')
   updateProduct(
     @Param('id', PositiveIntPipe) productId: number,

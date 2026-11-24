@@ -7,7 +7,8 @@ These instructions apply to `backend/`. Run backend commands from this directory
 - Organize code by NestJS module. For example, keep `products.module.ts`, `products.controller.ts`, and `products.service.ts` together in `src/products/`. Keep services next to their owning module.
 - `src/main.ts` starts the application. `AppModule` imports the application modules. Each module registers its controllers and providers and exports only what other modules use.
 - Controllers handle HTTP requests and delegate work to services. Services implement use cases and enforce business rules. Validate incoming data at the HTTP boundary.
-- Place DTOs with decorators in the module's `dto/` directory, types and interfaces in `types/index.ts`, and reusable constants in `constants/index.ts`. Create directories as the code needs them.
+- Place DTOs with decorators in the module's `dto/` directory. Use `types/index.ts` for types and interfaces and `constants/index.ts` for reusable constants by default. Create directories as the code needs them.
+- Keep `userRolesMap`, the `UserRole` union derived from it, and the related user types in `src/users/interfaces/index.ts`.
 - Move SQL into a repository within the module when queries make the service harder to read or need to be reused. SQL for simple use cases can stay in the service.
 
 ## PostgreSQL
@@ -21,7 +22,7 @@ These instructions apply to `backend/`. Run backend commands from this directory
 ## TypeScript and verification
 
 - Use named exports. Keep the `.js` extension in relative ESM imports. Use `import type` for imports used only in type positions.
-- Use `?` for optional properties. Fix type and lint errors in the source code. Avoid type assertions and suppression directives.
+- Use `?` for optional properties. Fix type and lint errors in the source code. Avoid type assertions and suppression directives. Use `as const` on `userRolesMap` to preserve the literal values used by `UserRole`.
 - After changing code, run `npm run lint`, `npm run build`, and `npm test`. For changes to HTTP behavior, run `npm run test:e2e`.
 
 ## Learning workflow

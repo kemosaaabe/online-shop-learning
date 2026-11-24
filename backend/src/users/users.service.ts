@@ -76,6 +76,7 @@ export class UsersService {
         SELECT
             u.id,
             u.email,
+            u.role,
             s.expires_at
         FROM shop.users as u
         JOIN shop.sessions as s
@@ -91,6 +92,10 @@ export class UsersService {
       throw new UnauthorizedException('');
     }
 
-    return { id: currentUser[0].id, email: currentUser[0].email };
+    return {
+      id: currentUser[0].id,
+      email: currentUser[0].email,
+      role: currentUser[0].role,
+    };
   }
 }

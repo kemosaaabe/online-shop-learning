@@ -75,6 +75,8 @@ export class AuthService {
   }
 
   async getMe(sessionToken?: string) {
-    return this.usersService.getCurrentUser(sessionToken);
+    const currentUser = await this.usersService.getCurrentUser(sessionToken);
+
+    return { id: currentUser.id, email: currentUser.email };
   }
 }
