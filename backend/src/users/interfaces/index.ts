@@ -15,3 +15,7 @@ export type UserLoginAuthResponse = Pick<
   User,
   'id' | 'email' | 'password_hash'
 >;
+
+export type UserGetMeResponse = Pick<User, 'id' | 'email'> & {
+  expires_at: Date;
+};

@@ -4,11 +4,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { DatabaseError } from 'pg';
+import { createHash } from 'node:crypto';
 import { DatabaseService } from '../database/database.service.js';
-import {
+import type {
   UserCreateResponse,
   UserCreate,
   UserLoginAuthResponse,
+  UserGetMeResponse,
 } from './interfaces/index.js';
 
 @Injectable()
@@ -59,5 +61,36 @@ export class UsersService {
     }
 
     return currentUser[0];
+  }
+
+  async getCurrentUser(sessionToken?: string) {
+    if (!sessionToken) {
+      throw new UnauthorizedException('');
+    }
+
+    const tokenHash = createHash('sha256').update(sessionToken).digest('hex');
+
+    const { rows: currentUser } =
+      await this.databaseService.makeQuery<UserGetMeResponse>(
+        `
+        SELECT
+            u.id,
+            u.email,
+            s.expires_at
+        FROM shop.users as u
+        JOIN shop.sessions as s
+            ON u.id = s.user_id
+        WHERE s.token_hash = $1
+            AND u.is_active = TRUE
+            AND s.expires_at > now()
+        `,
+        [tokenHash],
+      );
+
+    if (currentUser.length === 0) {
+      throw new UnauthorizedException('');
+    }
+
+    return { id: currentUser[0].id, email: currentUser[0].email };
   }
 }

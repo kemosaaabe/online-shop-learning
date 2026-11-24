@@ -4,12 +4,15 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Get,
   Res,
+  Cookies,
 } from '@nestjs/common';
 import { type Response } from 'express';
 import { AuthService } from './auth.service.js';
 import { type RegisterDto, registerSchema } from './schemas/register.schema.js';
 import { type LoginDto, loginSchema } from './schemas/login.schema.js';
+import { sessionCookieKey } from './constants/index.js';
 
 @Controller('auth')
 export class AuthController {
@@ -29,7 +32,7 @@ export class AuthController {
     const { user, sessionToken, expiresAt } =
       await this.authService.login(loginDto);
 
-    response.cookie('session', sessionToken, {
+    response.cookie(sessionCookieKey, sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       expires: expiresAt,
@@ -38,5 +41,10 @@ export class AuthController {
     });
 
     return user;
+  }
+
+  @Get('me')
+  async getMe(@Cookies(sessionCookieKey) sessionToken?: string) {
+    return this.authService.getMe(sessionToken);
   }
 }

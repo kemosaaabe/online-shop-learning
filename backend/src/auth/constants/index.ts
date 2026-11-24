@@ -13,3 +13,5 @@ export const authHashOptions: HashOptions = {
 };
 
 export const sessionTtlMs = 24 * 60 * 60 * 1000;
+
+export const sessionCookieKey = 'session';

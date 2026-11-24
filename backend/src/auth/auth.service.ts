@@ -57,4 +57,8 @@ export class AuthService {
       expiresAt: expiresAt,
     };
   }
+
+  async getMe(sessionToken?: string) {
+    return this.usersService.getCurrentUser(sessionToken);
+  }
 }
