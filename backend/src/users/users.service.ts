@@ -22,10 +22,18 @@ export class UsersService {
       const { rows: createdUser } =
         await this.databaseService.makeQuery<UserCreateResponse>(
           `
-            INSERT INTO shop.users (email, password_hash)
-                VALUES
-                    ($1, $2)
-            RETURNING id, email
+            WITH new_user as (
+              INSERT INTO shop.users (email, password_hash)
+              VALUES
+                ($1, $2)
+              RETURNING id, email
+            ),
+            new_cart AS (
+              INSERT INTO shop.users_carts (user_id)
+              SELECT id FROM new_user
+            )
+            SELECT id, email
+            FROM new_user
         `,
           [user.email, user.password_hash],
         );
