@@ -7,6 +7,8 @@ import {
   Body,
   HttpStatus,
   HttpCode,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { CartService } from './cart.service.js';
 import { sessionCookieKey } from '../auth/constants/index.js';
@@ -32,10 +34,33 @@ export class CartController {
     @Body({ schema: addProductSchema }) addProductDto: AddProductDto,
     @Cookies(sessionCookieKey) sessionToken?: string,
   ) {
-    return this.cartService.addProductToCard(
+    return this.cartService.addProductToCart(
       productId,
       addProductDto,
       sessionToken,
     );
+  }
+
+  @Patch('items/:productId')
+  @HttpCode(HttpStatus.OK)
+  updateProductItems(
+    @Param('productId', PositiveIntPipe) productId: number,
+    @Body({ schema: addProductSchema }) updateProductDto: AddProductDto,
+    @Cookies(sessionCookieKey) sessionToken?: string,
+  ) {
+    return this.cartService.updateProductItems(
+      productId,
+      updateProductDto,
+      sessionToken,
+    );
+  }
+
+  @Delete('items/:productId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteProductItems(
+    @Param('productId', PositiveIntPipe) productId: number,
+    @Cookies(sessionCookieKey) sessionToken?: string,
+  ) {
+    return this.cartService.deleteProductItems(productId, sessionToken);
   }
 }

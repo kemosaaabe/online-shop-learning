@@ -39,7 +39,7 @@ export class CartService {
     return cartItems;
   }
 
-  async addProductToCard(
+  async addProductToCart(
     productId: number,
     addProductDto: AddProductDto,
     sessionToken?: string,
@@ -80,5 +80,65 @@ export class CartService {
     }
 
     return cartItems[0];
+  }
+
+  async updateProductItems(
+    productId: number,
+    updateProductDto: AddProductDto,
+    sessionToken?: string,
+  ) {
+    const user = await this.usersService.getCurrentUser(sessionToken);
+
+    const { rows: currentProduct } = await this.databaseService.makeQuery<{
+      stock: number;
+    }>(
+      `
+        SELECT p.stock
+        FROM shop.products as p
+        JOIN shop.cart_items as ci
+          ON ci.product_id = p.id
+        WHERE ci.cart_id = $1
+          AND ci.product_id = $2
+          AND is_active = TRUE
+    `,
+      [user.id, productId],
+    );
+
+    if (currentProduct.length === 0) {
+      throw new NotFoundException('Товар не найден');
+    }
+
+    const { rows: cartItems } = await this.databaseService.makeQuery(
+      `
+        UPDATE shop.cart_items
+        SET products_count = $3
+        WHERE cart_id = $1
+          AND product_id = $2
+          AND $3::integer <= $4::integer
+        RETURNING product_id as "productId", products_count as quantity
+    `,
+      [user.id, productId, updateProductDto.quantity, currentProduct[0].stock],
+    );
+
+    if (cartItems.length === 0) {
+      throw new ConflictException('Недостаточно товара на складе');
+    }
+
+    return cartItems[0];
+  }
+
+  async deleteProductItems(productId: number, sessionToken?: string) {
+    const user = await this.usersService.getCurrentUser(sessionToken);
+
+    const { rows: removedItems } = await this.databaseService.makeQuery(
+      `
+        DELETE FROM shop.cart_items
+        WHERE cart_id = $1
+          AND product_id = $2
+    `,
+      [user.id, productId],
+    );
+
+    return removedItems[0];
   }
 }
