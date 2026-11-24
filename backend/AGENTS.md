@@ -7,7 +7,8 @@ These instructions apply to `backend/`. Run backend commands from this directory
 - Organize code by NestJS module. For example, keep `products.module.ts`, `products.controller.ts`, and `products.service.ts` together in `src/products/`. Keep services next to their owning module.
 - `src/main.ts` starts the application. `AppModule` imports the application modules. Each module registers its controllers and providers and exports only what other modules use.
 - Controllers handle HTTP requests and delegate work to services. Services implement use cases and enforce business rules. Validate incoming data at the HTTP boundary.
-- Place DTOs with decorators in the module's `dto/` directory. Use `types/index.ts` for types and interfaces and `constants/index.ts` for reusable constants by default. Create directories as the code needs them.
+- Keep shared backend types and interfaces in the owning module's `interfaces/` directory. Use files named for the domain, such as `src/products/interfaces/product.interface.ts` and `src/cart/interfaces/cart.interface.ts`.
+- Keep Zod-inferred DTO types beside their schemas in the module's `schemas/` directory. Place DTO classes with decorators in the module's `dto/` directory and reusable constants in `constants/index.ts`. Create directories as the code needs them.
 - Keep `userRolesMap`, the `UserRole` union derived from it, and the related user types in `src/users/interfaces/index.ts`.
 - Move SQL into a repository within the module when queries make the service harder to read or need to be reused. SQL for simple use cases can stay in the service.
 
