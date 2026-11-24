@@ -58,6 +58,22 @@ export class AuthService {
     };
   }
 
+  async logout(sessionToken?: string) {
+    if (!sessionToken) {
+      return;
+    }
+
+    const tokenHash = createHash('sha256').update(sessionToken).digest('hex');
+
+    await this.databaseService.makeQuery(
+      `
+        DELETE FROM shop.sessions
+        WHERE token_hash = $1
+    `,
+      [tokenHash],
+    );
+  }
+
   async getMe(sessionToken?: string) {
     return this.usersService.getCurrentUser(sessionToken);
   }

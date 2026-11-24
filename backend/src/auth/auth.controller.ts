@@ -12,7 +12,7 @@ import { type Response } from 'express';
 import { AuthService } from './auth.service.js';
 import { type RegisterDto, registerSchema } from './schemas/register.schema.js';
 import { type LoginDto, loginSchema } from './schemas/login.schema.js';
-import { sessionCookieKey } from './constants/index.js';
+import { sessionCookieKey, sessionCookieOptions } from './constants/index.js';
 
 @Controller('auth')
 export class AuthController {
@@ -33,14 +33,22 @@ export class AuthController {
       await this.authService.login(loginDto);
 
     response.cookie(sessionCookieKey, sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      ...sessionCookieOptions,
       expires: expiresAt,
-      sameSite: 'lax',
-      path: '/',
     });
 
     return user;
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logout(
+    @Res({ passthrough: true }) response: Response,
+    @Cookies(sessionCookieKey) sessionToken?: string,
+  ) {
+    await this.authService.logout(sessionToken);
+
+    response.clearCookie(sessionCookieKey, sessionCookieOptions);
   }
 
   @Get('me')

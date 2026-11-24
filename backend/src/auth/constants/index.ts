@@ -1,4 +1,5 @@
 import { argon2id, HashOptions } from 'argon2';
+import { type CookieOptions } from 'express';
 
 export const minPasswordLength = 8;
 export const passwordUppercasePattern = /\p{Lu}/u;
@@ -15,3 +16,10 @@ export const authHashOptions: HashOptions = {
 export const sessionTtlMs = 24 * 60 * 60 * 1000;
 
 export const sessionCookieKey = 'session';
+
+export const sessionCookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  path: '/',
+};
