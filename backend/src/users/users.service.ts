@@ -1,7 +1,15 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { DatabaseError } from 'pg';
 import { DatabaseService } from '../database/database.service.js';
-import { UserCreateResponse, UserCreate } from './interfaces/index.js';
+import {
+  UserCreateResponse,
+  UserCreate,
+  UserLoginAuthResponse,
+} from './interfaces/index.js';
 
 @Injectable()
 export class UsersService {
@@ -32,5 +40,24 @@ export class UsersService {
 
       throw error;
     }
+  }
+
+  async findActiveByEmail(email: string) {
+    const { rows: currentUser } =
+      await this.databaseService.makeQuery<UserLoginAuthResponse>(
+        `
+            SELECT id, email, password_hash
+            FROM shop.users
+            WHERE email = $1
+                AND is_active = TRUE
+        `,
+        [email],
+      );
+
+    if (currentUser.length === 0) {
+      throw new UnauthorizedException('Неверный email или пароль');
+    }
+
+    return currentUser[0];
   }
 }

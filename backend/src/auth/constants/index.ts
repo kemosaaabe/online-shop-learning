@@ -11,3 +11,5 @@ export const authHashOptions: HashOptions = {
   timeCost: 2,
   parallelism: 1,
 };
+
+export const sessionTtlMs = 24 * 60 * 60 * 1000;

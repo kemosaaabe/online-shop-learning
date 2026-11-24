@@ -10,3 +10,8 @@ export interface User {
 export type UserCreate = Pick<User, 'email' | 'password_hash'>;
 
 export type UserCreateResponse = Pick<User, 'id' | 'email'>;
+
+export type UserLoginAuthResponse = Pick<
+  User,
+  'id' | 'email' | 'password_hash'
+>;
