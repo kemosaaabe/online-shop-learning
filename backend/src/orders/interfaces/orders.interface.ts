@@ -38,3 +38,15 @@ export interface UserOrder extends GetUserOrdersResponse {
   address: string;
   items: UserOrderItems[];
 }
+
+export interface UserCartItems {
+  productId: string;
+  quantity: number;
+}
+
+export interface UserCartProductItem {
+  id: string;
+  name: string;
+  price: string;
+  quantity: number;
+}

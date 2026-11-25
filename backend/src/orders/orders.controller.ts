@@ -1,7 +1,11 @@
-import { Controller, Cookies, Get, Param } from '@nestjs/common';
-import { OrdersService } from './orders.service.js';
+import { Body, Controller, Cookies, Get, Param, Post } from '@nestjs/common';
 import { sessionCookieKey } from '../auth/constants/index.js';
 import { PositiveBigintPipe } from '../common/pipes/positive-bigint.pipe.js';
+import { OrdersService } from './orders.service.js';
+import {
+  type CreateOrderDto,
+  createOrderSchema,
+} from './schemas/create-order.schema.js';
 
 @Controller('orders')
 export class OrdersController {
@@ -18,5 +22,13 @@ export class OrdersController {
     @Cookies(sessionCookieKey) sessionToken?: string,
   ) {
     return this.ordersService.getUserOrder(orderId, sessionToken);
+  }
+
+  @Post()
+  createUserOrder(
+    @Body({ schema: createOrderSchema }) createOrderDto: CreateOrderDto,
+    @Cookies(sessionCookieKey) sessionToken?: string,
+  ) {
+    return this.ordersService.createUserOrder(createOrderDto, sessionToken);
   }
 }
