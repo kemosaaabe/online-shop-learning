@@ -83,6 +83,7 @@ export class OrdersService {
   }
 
   async createUserOrder(createOrderDto: CreateOrderDto, sessionToken?: string) {
+    // todo: reuse sessionToken (decorator or something else)
     const user = await this.usersService.getCurrentUser(sessionToken);
 
     const createdUserOrder =
@@ -179,6 +180,7 @@ export class OrdersService {
             [user.id],
           );
 
+          // todo: reuse it
           const { rows: userCreatedOrder } = await client.query<UserOrder>(
             `
             SELECT
