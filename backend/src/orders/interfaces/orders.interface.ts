@@ -22,3 +22,19 @@ export type GetUserOrdersResponse = Pick<Order, 'id' | 'status'> & {
   totalSum: Order['total_sum'];
   createdAt: Order['created_at'];
 };
+
+export interface UserOrderItems {
+  productId: string;
+  name: string;
+  unitPrice: string;
+  quantity: number;
+}
+
+export interface UserOrder extends GetUserOrdersResponse {
+  id: string;
+  status: OrderStatus;
+  createdAt: Date;
+  totalSum: string;
+  address: string;
+  items: UserOrderItems[];
+}
