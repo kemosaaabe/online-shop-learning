@@ -8,7 +8,8 @@ These instructions apply to `backend/`. Run backend commands from this directory
 - `src/main.ts` starts the application. `AppModule` imports the application modules. Each module registers its controllers and providers and exports only what other modules use.
 - Controllers handle HTTP requests and delegate work to services. Services implement use cases and enforce business rules. Validate incoming data at the HTTP boundary.
 - Keep shared backend types and interfaces in the owning module's `interfaces/` directory. Use files named for the domain, such as `src/products/interfaces/product.interface.ts` and `src/cart/interfaces/cart.interface.ts`.
-- Keep Zod-inferred DTO types beside their schemas in the module's `schemas/` directory. Place DTO classes with decorators in the module's `dto/` directory and reusable constants in `constants/index.ts`. Create directories as the code needs them.
+- Define `as const` values used to derive types in the same `<entity>.interface.ts` file as those types. For example, keep `ordersStatusesMap` and `OrderStatus` together in `src/orders/interfaces/orders.interface.ts`. Keep other reusable constants in `constants/index.ts`.
+- Keep Zod-inferred DTO types beside their schemas in the module's `schemas/` directory. Place DTO classes with decorators in the module's `dto/` directory. Create directories as the code needs them.
 - Keep `userRolesMap`, the `UserRole` union derived from it, and the related user types in `src/users/interfaces/index.ts`.
 - Move SQL into a repository within the module when queries make the service harder to read or need to be reused. SQL for simple use cases can stay in the service.
 
