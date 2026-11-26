@@ -51,4 +51,27 @@ describe('Products API (e2e)', async () => {
 
     expect(response.body).toEqual(product);
   });
+
+  it('returns 404 when product not found', async () => {
+    const database = app.get(DatabaseService);
+
+    const productUnexistingId = 333333;
+
+    const { rows } = await database.makeQuery<ProductResponse>(
+      `
+        SELECT id, name, price, stock
+        FROM shop.products
+        WHERE id = $1
+      `,
+      [productUnexistingId],
+    );
+
+    expect(rows.length).toBe(0);
+
+    const response = await request(app.getHttpServer())
+      .get(`/products/${productUnexistingId}`)
+      .expect(404);
+
+    expect(response.body.message).toBe('Not Found');
+  });
 });

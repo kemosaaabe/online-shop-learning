@@ -92,4 +92,40 @@ describe('DatabaseService integration', () => {
 
     expect(rows).toEqual([{ status: 'aborted' }]);
   });
+
+  it('should successfully commit transaction', async () => {
+    let transcationId = '';
+
+    await database.withTransaction(async (client) => {
+      await client.query(
+        `
+            CREATE TEMP TABLE test_commit_items 
+                (quantity integer)
+            ON COMMIT DROP
+        `,
+      );
+
+      await client.query(
+        `
+            INSERT INTO test_commit_items (quantity)
+            VALUES ($1)
+        `,
+        [3],
+      );
+
+      const { rows } = await client.query(`
+            SELECT pg_current_xact_id()::text as id
+        `);
+      transcationId = rows[0].id;
+    });
+
+    const { rows } = await database.makeQuery(
+      `
+            SELECT pg_xact_status($1::xid8) as status
+        `,
+      [transcationId],
+    );
+
+    expect(rows[0].status).toBe('committed');
+  });
 });
