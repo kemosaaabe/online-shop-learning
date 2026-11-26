@@ -1,6 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DatabaseService } from '../database/database.service.js';
 import { UsersService } from '../users/users.service.js';
+import {
+  ordersStatusesMap,
+  OrderStatus,
+} from '../orders/interfaces/orders.interface.js';
 import { PaymentProviderOperationType } from './interfaces/payment-provider.interface.js';
 import { MockPaymentService } from './mock-payment.service.js';
 import {
@@ -19,19 +27,23 @@ export class PaymentsService {
   async createPayment(
     orderId: string,
     operationType: PaymentProviderOperationType,
+    idempotencyKey: string,
     sessionToken?: string,
   ) {
     const user = await this.usersService.getCurrentUser(sessionToken);
 
     const createdPayment = await this.databaseService.withTransaction<Payment>(
       async (client) => {
-        const { rows: order } = await client.query<{ totalSum: string }>(
+        const { rows: order } = await client.query<{
+          totalSum: string;
+          status: OrderStatus;
+        }>(
           `
                 SELECT 
-                    total_sum as "totalSum"
+                    total_sum as "totalSum",
+                    status
                 FROM shop.orders
                 WHERE id = $1
-                    AND status = 'pending'
                     AND user_id = $2
                 FOR UPDATE
             `,
@@ -42,13 +54,36 @@ export class PaymentsService {
           throw new NotFoundException('Заказ не найден');
         }
 
+        const { rows: existingPayment } = await client.query<Payment>(
+          `
+                SELECT
+                    id, 
+                    payment_sum as "paymentSum", 
+                    status, 
+                    payment_provider_id as "paymentProviderId", 
+                    order_id as "orderId"
+                FROM shop.payments
+                WHERE order_id = $1
+                    AND idempotency_key = $2
+            `,
+          [orderId, idempotencyKey],
+        );
+
+        if (existingPayment.length !== 0) {
+          return existingPayment[0];
+        }
+
+        if (order[0].status !== ordersStatusesMap.pending) {
+          throw new ConflictException('Заказ нельзя оплатить');
+        }
+
         const paymentProviderMock =
           this.paymentProviderService.createMockPayment(operationType);
 
         const { rows: createdPayment } = await client.query<Payment>(
           `
-                INSERT INTO shop.payments (payment_sum, status, payment_provider_id, order_id)
-                SELECT $1, $2, $3, $4
+                INSERT INTO shop.payments (payment_sum, status, payment_provider_id, order_id, idempotency_key)
+                SELECT $1, $2, $3, $4, $5
                 RETURNING 
                     id, 
                     payment_sum as "paymentSum", 
@@ -61,6 +96,7 @@ export class PaymentsService {
             paymentProviderMock.status,
             paymentProviderMock.paymentProviderId,
             orderId,
+            idempotencyKey,
           ],
         );
 
