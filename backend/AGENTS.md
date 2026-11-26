@@ -29,6 +29,7 @@ These instructions apply to `backend/`. Run backend commands from this directory
 
 ## Learning workflow
 
-- For learning tasks, explain the topic first and let the user describe it in their own words. Then give them a practical exercise and its acceptance criteria.
-- The user writes the solution and the assistant reviews it. Offer hints gradually when asked. If the user requests scaffolding or implementation of a specific part, limit edits to that part.
-- Update `LEARNING_PROGRESS.md` after each reviewed milestone. Record what was verified and the next step.
+- Treat every topic the user proposes as a learning task in every chat. Read `LEARNING_PROGRESS.md` at the start to see what the user has already learned and what remains.
+- Before starting a new section, outline what it will cover. Explain the theory first and let the user describe it in their own words. Then give them a practical exercise with acceptance criteria.
+- The user implements the solution, and the assistant reviews it. The goal is for the user to learn to do the work independently. Offer hints gradually when asked. If the user requests scaffolding or implementation of a specific part, limit edits to that part.
+- Update `LEARNING_PROGRESS.md` after each reviewed milestone. Record what was learned, what was verified, and the next step.
