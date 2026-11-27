@@ -13,6 +13,7 @@ import {
   productSortColumns,
   productSortDirections,
 } from './constants/index.js';
+import type { GetProductsCursorDto } from './schemas/get-products-cursor.schema.js';
 
 @Injectable()
 export class ProductsService {
@@ -43,6 +44,45 @@ export class ProductsService {
         OFFSET $2
         `,
         [query.limit, offset],
+      );
+
+    return productsList;
+  }
+
+  async getProductsCursor(query: GetProductsCursorDto) {
+    if (query.afterPrice && query.afterId) {
+      const { rows: productsList } =
+        await this.databaseService.makeQuery<ProductResponse>(
+          `SELECT
+            id,
+            name,
+            price,
+            stock
+            FROM shop.products
+          WHERE is_active = TRUE
+            AND (price, id) > ($1, $2)
+          ORDER BY price, id
+          LIMIT $3
+        `,
+          [query.afterPrice, query.afterId, query.limit],
+        );
+
+      return productsList;
+    }
+
+    const { rows: productsList } =
+      await this.databaseService.makeQuery<ProductResponse>(
+        `SELECT
+          id,
+          name,
+          price,
+          stock
+        FROM shop.products
+        WHERE is_active = TRUE
+        ORDER BY price, id
+        LIMIT $1
+        `,
+        [query.limit],
       );
 
     return productsList;

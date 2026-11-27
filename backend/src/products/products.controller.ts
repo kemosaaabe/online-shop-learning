@@ -23,6 +23,10 @@ import {
   type GetProductsDto,
   getProductsSchema,
 } from './schemas/get-products.schema.js';
+import {
+  type GetProductsCursorDto,
+  getProductsCursorSchema,
+} from './schemas/get-products-cursor.schema.js';
 
 @Controller('products')
 export class ProductsController {
@@ -31,6 +35,13 @@ export class ProductsController {
   @Get()
   getProducts(@Query({ schema: getProductsSchema }) query: GetProductsDto) {
     return this.productsService.getProducts(query);
+  }
+
+  @Get('cursor')
+  getProductsCursor(
+    @Query({ schema: getProductsCursorSchema }) query: GetProductsCursorDto,
+  ) {
+    return this.productsService.getProductsCursor(query);
   }
 
   @Get(':id')
