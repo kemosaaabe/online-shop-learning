@@ -56,39 +56,35 @@ export class ProductsService {
   async getProductsCursor(
     query: GetProductsCursorDto,
   ): Promise<ProductCursorResponse> {
-    if (query.afterPrice && query.afterId) {
-      const { rows: productsList } =
-        await this.databaseService.makeQuery<ProductResponse>(
-          `SELECT
-            id,
-            name,
-            price,
-            stock
-            FROM shop.products
-          WHERE is_active = TRUE
-            AND (price, id) > ($1, $2)
-          ORDER BY price, id
-          LIMIT $3
-        `,
-          [query.afterPrice, query.afterId, query.limit + 1],
-        );
+    const conditions = ['is_active = TRUE'];
+    const params = [String(query.limit + 1)];
 
-      return getProductsCursorItems(productsList, query.limit);
+    if (query.afterPrice && query.afterId) {
+      const afterPriceIdx = params.push(query.afterPrice);
+      const afterIdIdx = params.push(query.afterId);
+
+      conditions.push(`(price, id) > ($${afterPriceIdx}, $${afterIdIdx})`);
+    }
+
+    if (query.categoryId) {
+      const categoryIdx = params.push(String(query.categoryId));
+
+      conditions.push(`category_id = $${categoryIdx}`);
     }
 
     const { rows: productsList } =
       await this.databaseService.makeQuery<ProductResponse>(
         `SELECT
-          id,
-          name,
-          price,
-          stock
-        FROM shop.products
-        WHERE is_active = TRUE
-        ORDER BY price, id
-        LIMIT $1
+            id,
+            name,
+            price,
+            stock
+            FROM shop.products
+          WHERE ${conditions.join(' AND ')}
+          ORDER BY price, id
+          LIMIT $1
         `,
-        [query.limit + 1],
+        params,
       );
 
     return getProductsCursorItems(productsList, query.limit);

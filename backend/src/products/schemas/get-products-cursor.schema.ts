@@ -7,6 +7,7 @@ export const getProductsCursorSchema = z
   .strictObject({
     limit: getProductsSchema.shape.limit,
     afterPrice: createProductSchema.shape.price.optional(),
+    categoryId: z.coerce.number().int().positive().max(2147483647).optional(),
     afterId: z
       .string()
       .regex(/^[0-9]+$/, 'ID должен содержать только цифры')
