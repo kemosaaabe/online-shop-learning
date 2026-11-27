@@ -6,14 +6,17 @@ import {
 import { DatabaseError } from 'pg';
 import { DatabaseService } from '../database/database.service.js';
 import type { ProductResponse } from './interfaces/product.interface.js';
-import { CreateProductDto } from './schemas/create-product.schema.js';
-import { UpdateProductDto } from './schemas/update-product.schema.js';
+import type { CreateProductDto } from './schemas/create-product.schema.js';
+import type { UpdateProductDto } from './schemas/update-product.schema.js';
+import type { GetProductsDto } from './schemas/get-products.schema.js';
 
 @Injectable()
 export class ProductsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async getProducts() {
+  async getProducts(query: GetProductsDto) {
+    const offset = (query.page - 1) * query.limit;
+
     const { rows: productsList } =
       await this.databaseService.makeQuery<ProductResponse>(
         `SELECT
@@ -23,7 +26,11 @@ export class ProductsService {
           stock
         FROM shop.products
         WHERE is_active = TRUE
+        ORDER BY id ASC
+        LIMIT $1
+        OFFSET $2
         `,
+        [query.limit, offset],
       );
 
     return productsList;

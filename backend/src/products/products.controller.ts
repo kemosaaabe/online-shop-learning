@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { PositiveIntPipe } from '../common/pipes/positive-int.pipe.js';
@@ -18,14 +19,18 @@ import {
   updateProductSchema,
   type UpdateProductDto,
 } from './schemas/update-product.schema.js';
+import {
+  type GetProductsDto,
+  getProductsSchema,
+} from './schemas/get-products.schema.js';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  getProducts() {
-    return this.productsService.getProducts();
+  getProducts(@Query({ schema: getProductsSchema }) query: GetProductsDto) {
+    return this.productsService.getProducts(query);
   }
 
   @Get(':id')
