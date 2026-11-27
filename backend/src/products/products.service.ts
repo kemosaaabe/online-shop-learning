@@ -9,6 +9,10 @@ import type { ProductResponse } from './interfaces/product.interface.js';
 import type { CreateProductDto } from './schemas/create-product.schema.js';
 import type { UpdateProductDto } from './schemas/update-product.schema.js';
 import type { GetProductsDto } from './schemas/get-products.schema.js';
+import {
+  productSortColumns,
+  productSortDirections,
+} from './constants/index.js';
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +20,14 @@ export class ProductsService {
 
   async getProducts(query: GetProductsDto) {
     const offset = (query.page - 1) * query.limit;
+
+    const sortCol = productSortColumns[query.sortBy];
+    const sortDirection = productSortDirections[query.sortOrder];
+
+    const sortQuery =
+      sortCol === productSortColumns.id
+        ? `${sortCol} ${sortDirection}`
+        : `${sortCol} ${sortDirection}, id ASC`;
 
     const { rows: productsList } =
       await this.databaseService.makeQuery<ProductResponse>(
@@ -26,7 +38,7 @@ export class ProductsService {
           stock
         FROM shop.products
         WHERE is_active = TRUE
-        ORDER BY id ASC
+        ORDER BY ${sortQuery}
         LIMIT $1
         OFFSET $2
         `,
