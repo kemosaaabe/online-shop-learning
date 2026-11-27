@@ -5,7 +5,10 @@ import {
 } from '@nestjs/common';
 import { DatabaseError } from 'pg';
 import { DatabaseService } from '../database/database.service.js';
-import type { ProductResponse } from './interfaces/product.interface.js';
+import type {
+  ProductCursorResponse,
+  ProductResponse,
+} from './interfaces/product.interface.js';
 import type { CreateProductDto } from './schemas/create-product.schema.js';
 import type { UpdateProductDto } from './schemas/update-product.schema.js';
 import type { GetProductsDto } from './schemas/get-products.schema.js';
@@ -14,6 +17,7 @@ import {
   productSortDirections,
 } from './constants/index.js';
 import type { GetProductsCursorDto } from './schemas/get-products-cursor.schema.js';
+import { getProductsCursorItems } from './libs/index.js';
 
 @Injectable()
 export class ProductsService {
@@ -49,7 +53,9 @@ export class ProductsService {
     return productsList;
   }
 
-  async getProductsCursor(query: GetProductsCursorDto) {
+  async getProductsCursor(
+    query: GetProductsCursorDto,
+  ): Promise<ProductCursorResponse> {
     if (query.afterPrice && query.afterId) {
       const { rows: productsList } =
         await this.databaseService.makeQuery<ProductResponse>(
@@ -64,10 +70,10 @@ export class ProductsService {
           ORDER BY price, id
           LIMIT $3
         `,
-          [query.afterPrice, query.afterId, query.limit],
+          [query.afterPrice, query.afterId, query.limit + 1],
         );
 
-      return productsList;
+      return getProductsCursorItems(productsList, query.limit);
     }
 
     const { rows: productsList } =
@@ -82,10 +88,10 @@ export class ProductsService {
         ORDER BY price, id
         LIMIT $1
         `,
-        [query.limit],
+        [query.limit + 1],
       );
 
-    return productsList;
+    return getProductsCursorItems(productsList, query.limit);
   }
 
   async getProduct(productId: number) {

@@ -8,3 +8,14 @@ export interface Product {
 }
 
 export type ProductResponse = Omit<Product, 'is_active' | 'category_id'>;
+
+export interface ProductCursor {
+  afterPrice: string;
+  afterId: string;
+}
+
+export interface ProductCursorResponse {
+  items: ProductResponse[];
+  hasMore: boolean;
+  nextCursor: ProductCursor | null;
+}
